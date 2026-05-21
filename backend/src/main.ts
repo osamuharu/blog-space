@@ -6,20 +6,23 @@ import { AllConfigType } from './shared/types/config.type';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService<AllConfigType>);
-  const host = 'localhost';
-  const port = configService.getOrThrow('app.port', { infer: true });
+
   const appName = configService.getOrThrow('app.name', { infer: true });
+  const backendDomain = configService.getOrThrow('app.backendDomain', {
+    infer: true,
+  });
+  const port = configService.getOrThrow('app.port', { infer: true });
 
   await app.listen(port);
 
   return {
-    appName: appName,
-    url: `http://${host}:${port}`,
+    name: appName,
+    url: backendDomain,
   };
 }
 bootstrap()
-  .then(({ appName, url }) => {
-    console.log(appName);
+  .then(({ name, url }) => {
+    console.log(name);
     console.log(`Server run on ${url}`);
   })
   .catch((e: Error) => {
