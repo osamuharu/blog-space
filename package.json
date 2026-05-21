@@ -1,0 +1,25 @@
+{
+  "name": "blog-space",
+  "version": "0.0.0",
+  "description": "<div align=\"center\">",
+  "scripts": {
+    "prepare": "husky",
+    "test:fe": "cd frontend && npm test",
+    "test:be": "cd backend && npm test",
+    "test:all": "npm run test:fe && npm run test:be",
+    "format:fe": "cd frontend && npx eslint --fix && npx prettier --write .",
+    "format:be": "cd backend && npx eslint --fix && npx prettier --write .",
+    "format:all": "npm run format:fe && npm run format:be"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-work:osamuharu/blog-space.git"
+  },
+  "keywords": [],
+  "author": "osamuharu",
+  "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "husky": "^9.1.7"
+  }
+}
