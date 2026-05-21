@@ -1,4 +1,2 @@
-npm run format:fe
-npm run test:fe
-# npm run format:all
-# npm run test:all
+npm run format:all
+npm run test:all

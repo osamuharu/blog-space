@@ -7,8 +7,8 @@
     "test:fe": "cd frontend && npm test && npm run test:e2e",
     "test:be": "cd backend && npm test && npm run test:e2e",
     "test:all": "npm run test:fe && npm run test:be",
-    "format:fe": "cd frontend && npm run lint:fix && npm run prettier:write",
-    "format:be": "cd backend && npm run lint:fix && npm run prettier:write",
+    "format:fe": "cd frontend && npm run lint:fix && npm run format",
+    "format:be": "cd backend && npm run lint:fix && npm run format",
     "format:all": "npm run format:fe && npm run format:be"
   },
   "repository": {
