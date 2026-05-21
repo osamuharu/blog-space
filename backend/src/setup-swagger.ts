@@ -1,9 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
-
 import { AllConfigType } from './shared/types/config.type';
-import { version } from '@/package.json';
 
 export default function setupSwagger(
   app: INestApplication,
@@ -11,8 +9,7 @@ export default function setupSwagger(
 ): { url: string } {
   const docName: string = configService.getOrThrow('app.name', { infer: true });
   const docDesc: string = 'Section for describe whole APIs';
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const docVersion: string = version;
+  const docVersion: string = process.env.npm_package_version || '1.0.0';
   const docPrefix: string = 'docs';
   const apiPrefix: string = configService.getOrThrow('app.apiPrefix', {
     infer: true,
