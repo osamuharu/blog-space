@@ -10,17 +10,12 @@ import {
   Min,
 } from 'class-validator';
 import validateConfig from '../utils/validate-config';
-
-enum Environment {
-  Development = 'development',
-  Production = 'production',
-  Test = 'test',
-}
+import { ENVIROMENT } from '../constant/enum';
 
 class EnvironmentVariablesValidator {
-  @IsEnum(Environment)
+  @IsEnum(ENVIROMENT)
   @IsOptional()
-  NODE_ENV: Environment;
+  NODE_ENV: ENVIROMENT;
 
   @IsInt()
   @Min(0)
