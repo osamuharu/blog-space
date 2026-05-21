@@ -11,7 +11,8 @@ export default function setupSwagger(
 ): { url: string } {
   const docName: string = configService.getOrThrow('app.name', { infer: true });
   const docDesc: string = 'Section for describe whole APIs';
-  const docVersion: string = version as string;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const docVersion: string = version;
   const docPrefix: string = 'docs';
   const apiPrefix: string = configService.getOrThrow('app.apiPrefix', {
     infer: true,
