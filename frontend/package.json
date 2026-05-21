@@ -10,7 +10,7 @@
     "lint:fix": "eslint --fix",
     "prettier": "prettier",
     "prettier:write": "prettier -w .",
-    "test": "jest",
+    "test": "jest -u",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },

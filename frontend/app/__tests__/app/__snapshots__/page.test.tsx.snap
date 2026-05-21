@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Home Page snapshot test 1`] = `
+<div>
+  <div
+    class="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black"
+  >
+    <h1>
+      Hello World
+    </h1>
+  </div>
+</div>
+`;
