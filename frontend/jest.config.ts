@@ -15,7 +15,7 @@ const config: Config = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+  testMatch: ['**/__tests__/**/?(*.)+(spec|test).[jt]s?(x)'],
 
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
 

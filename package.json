@@ -4,8 +4,8 @@
   "description": "<div align=\"center\">",
   "scripts": {
     "prepare": "husky",
-    "test:fe": "cd frontend && npm test",
-    "test:be": "cd backend && npm test",
+    "test:fe": "cd frontend && npm test && npm run test:e2e",
+    "test:be": "cd backend && npm test && npm run test:e2e",
     "test:all": "npm run test:fe && npm run test:be",
     "format:fe": "cd frontend && npm run lint:fix && npm run prettier:write",
     "format:be": "cd backend && npm run lint:fix && npm run prettier:write",

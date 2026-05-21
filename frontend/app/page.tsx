@@ -1,7 +1,10 @@
+import { Button } from '@/components/ui/button';
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <h1>Hello World</h1>
+      <Button>Click</Button>
     </div>
   );
 }
