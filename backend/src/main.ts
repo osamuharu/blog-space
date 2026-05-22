@@ -1,6 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { INestApplication } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  INestApplication,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 
 import { AllConfigType } from './shared/types/config.type';
 import setupSwagger from './setup-swagger';
@@ -8,6 +13,8 @@ import setupSwagger from './setup-swagger';
 import { AppModule } from './app.module';
 import { useContainer } from 'class-validator';
 import { ENVIROMENT } from './shared/constant/enum';
+import validationOptions from './shared/utils/pipes/validation-option.pipe';
+import { ResolvePromisesInterceptor } from './shared/utils/interceptors/serializer.interceptor';
 
 async function bootstrap() {
   const app: INestApplication = await NestFactory.create(AppModule);
@@ -22,7 +29,16 @@ async function bootstrap() {
   const nodeEnv = configService.getOrThrow('app.nodeEnv', { infer: true });
   const apiPrefix = configService.getOrThrow('app.apiPrefix', { infer: true });
 
-  app.setGlobalPrefix(apiPrefix);
+  app.enableShutdownHooks();
+  app.setGlobalPrefix(apiPrefix, { exclude: ['/'] });
+  app.enableVersioning({ type: VersioningType.URI });
+  app.useGlobalPipes(new ValidationPipe(validationOptions));
+  app.useGlobalInterceptors(
+    // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
+    // https://github.com/typestack/class-transformer/issues/549
+    new ResolvePromisesInterceptor(),
+    new ClassSerializerInterceptor(app.get(Reflector)),
+  );
 
   if (nodeEnv !== ENVIROMENT.PRODUCTION.toString()) {
     const { url } = setupSwagger(app, configService);
