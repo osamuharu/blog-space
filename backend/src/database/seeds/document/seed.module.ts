@@ -1,14 +1,15 @@
+import appConfig from '@/src/shared/config/app.config';
+import databaseConfig from '@/src/shared/config/database.config';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import appConfig from './shared/config/app.config';
-import databaseConfig from './shared/config/database.config';
+
 import { MongooseModule } from '@nestjs/mongoose';
-import { AllConfigType } from './shared/types/config.type';
 import {
   MongooseCloudConfigService,
   MongooseMemoryConfigService,
-} from './database/services/mongoose-config.service';
-import { ENVIROMENT } from './shared/constant/enum';
+} from '../../services/mongoose-config.service';
+import { AllConfigType } from '@/src/shared/types/config.type';
+import { ENVIROMENT } from '@/src/shared/constant/enum';
 
 @Module({
   imports: [
@@ -34,7 +35,5 @@ import { ENVIROMENT } from './shared/constant/enum';
       },
     }),
   ],
-  controllers: [],
-  providers: [],
 })
-export class AppModule {}
+export class SeedModule {}
