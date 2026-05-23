@@ -32,14 +32,15 @@ export class MongooseCloudConfigService implements MongooseOptionsFactory {
 
 @Injectable()
 export class MongooseMemoryConfigService implements MongooseOptionsFactory {
+  private mongoServer?: MongoMemoryServer;
+
   constructor(private configService: ConfigService<AllConfigType>) {}
 
   async createMongooseOptions(): Promise<MongooseModuleOptions> {
-    const mongoServer = await MongoMemoryServer.create({
+    this.mongoServer = await MongoMemoryServer.create({
       instance: {
         dbName: this.configService.get('database.name', { infer: true }),
-        port: this.configService.get('database.port', { infer: true }),
-        launchTimeout: 5000,
+        // port: this.configService.get('database.port', { infer: true }),
       },
       auth: {
         customRootName: this.configService.get('database.username', {
@@ -52,7 +53,7 @@ export class MongooseMemoryConfigService implements MongooseOptionsFactory {
     });
 
     return {
-      uri: mongoServer.getUri(),
+      uri: this.mongoServer.getUri(),
       connectionFactory(connection: Connection) {
         connection.plugin(mongooseAutoPopulate);
 
@@ -60,5 +61,11 @@ export class MongooseMemoryConfigService implements MongooseOptionsFactory {
         return transactionFactory(connection);
       },
     };
+  }
+
+  async onModuleDestroy() {
+    if (this.mongoServer) {
+      await this.mongoServer.stop();
+    }
   }
 }
