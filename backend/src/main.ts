@@ -13,8 +13,8 @@ import setupSwagger from './setup-swagger';
 import { AppModule } from './app.module';
 import { useContainer } from 'class-validator';
 import { ENVIROMENT } from './shared/constant/enum';
-import validationOptions from './shared/utils/pipes/validation-option.pipe';
-import { ResolvePromisesInterceptor } from './shared/utils/interceptors/serializer.interceptor';
+import validationOptions from './shared/pipes/validation-option.pipe';
+import { ResolvePromisesInterceptor } from './shared/interceptors/serializer.interceptor';
 
 async function bootstrap() {
   const app: INestApplication = await NestFactory.create(AppModule);

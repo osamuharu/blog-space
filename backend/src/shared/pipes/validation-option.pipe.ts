@@ -4,7 +4,7 @@ import {
   ValidationError,
   ValidationPipeOptions,
 } from '@nestjs/common';
-import { FormattedErrors } from '../../types/format.type';
+import { FormattedErrors } from '../types/format.type';
 
 function generateErrors(errors: ValidationError[]): FormattedErrors {
   return errors.reduce<FormattedErrors>(
