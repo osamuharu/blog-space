@@ -1,7 +1,8 @@
 import { Prop } from '@nestjs/mongoose';
 import { now } from 'mongoose';
+import { BaseDocumentEntity } from './base-document.entity';
 
-export class TimestampsDocumentEntity {
+export class TimestampsDocumentEntity extends BaseDocumentEntity {
   @Prop({ type: Date, default: now })
   createdAt: Date;
 
