@@ -1,14 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import appConfig from './shared/config/app.config';
 import databaseConfig from './shared/config/database.config';
-import { MongooseModule } from '@nestjs/mongoose';
-import { AllConfigType } from './shared/types/config.type';
-import {
-  MongooseCloudConfigService,
-  MongooseMemoryConfigService,
-} from './database/services/mongoose-config.service';
-import { ENVIROMENT } from './shared/constant/enum';
+import { UserModule } from './modules/users/users.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -17,22 +12,8 @@ import { ENVIROMENT } from './shared/constant/enum';
       load: [appConfig, databaseConfig],
       envFilePath: ['.env'],
     }),
-    MongooseModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService<AllConfigType>) => {
-        const nodeEnv = configService.getOrThrow('app.nodeEnv', {
-          infer: true,
-        });
-
-        if (nodeEnv !== ENVIROMENT.PRODUCTION.toString()) {
-          const memoryService = new MongooseMemoryConfigService(configService);
-          return await memoryService.createMongooseOptions();
-        }
-
-        const cloudService = new MongooseCloudConfigService(configService);
-        return cloudService.createMongooseOptions();
-      },
-    }),
+    DatabaseModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

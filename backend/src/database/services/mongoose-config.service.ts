@@ -7,7 +7,6 @@ import {
 import { Connection } from 'mongoose';
 import mongooseAutoPopulate from 'mongoose-autopopulate';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { createTransactionConnectionFactory } from 'nestjs-mongo-transactions';
 
 import { AllConfigType } from '../../shared/types/config.type';
 
@@ -20,9 +19,7 @@ export class MongooseCloudConfigService implements MongooseOptionsFactory {
       uri: this.configService.get('database.url', { infer: true }),
       connectionFactory(connection: Connection) {
         connection.plugin(mongooseAutoPopulate);
-
-        const transactionFactory = createTransactionConnectionFactory();
-        return transactionFactory(connection);
+        return connection;
       },
     };
 
@@ -56,9 +53,7 @@ export class MongooseMemoryConfigService implements MongooseOptionsFactory {
       uri: this.mongoServer.getUri(),
       connectionFactory(connection: Connection) {
         connection.plugin(mongooseAutoPopulate);
-
-        const transactionFactory = createTransactionConnectionFactory();
-        return transactionFactory(connection);
+        return connection;
       },
     };
   }
