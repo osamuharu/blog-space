@@ -1,0 +1,1 @@
+export const RETRY_CHANGE_USERNAME_MAX_ATTEMPTS = 5;
