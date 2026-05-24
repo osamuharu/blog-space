@@ -8,7 +8,6 @@ import {
   IsBoolean,
   IsOptional,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import validateConfig from '../utils/validate-config';
 import { DatabaseConfig } from '../types/database-config.type';
 
@@ -26,7 +25,6 @@ class EnvironmentVariablesValidator {
   DATABASE_HOST?: string;
 
   @ValidateIf((env: EnvironmentVariablesValidator) => !env.DATABASE_URL)
-  @Type(() => Number)
   @IsInt()
   @Min(0)
   @Max(65535)
