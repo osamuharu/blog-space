@@ -18,7 +18,7 @@ export class UserService {
   }
 
   async create(dto: CreateUserRequestDto) {
-    await this.createUser.execute(dto);
-    return;
+    const user = await this.createUser.execute(this.mapper.toDomain(dto));
+    return this.mapper.toDto(user);
   }
 }

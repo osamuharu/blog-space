@@ -5,33 +5,28 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user.repository';
-import { CreateUserRequestDto } from '../../presentation/dtos/create-user-request.dto';
-import { UserMapper } from '../mappers/user.mapper';
 import { RETRY_CHANGE_USERNAME_MAX_ATTEMPTS } from '../constant';
+import { User } from '../../domain/entities/user.entity';
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(
-    private readonly repository: UserRepository,
-    private readonly mapper: UserMapper,
-  ) {}
-  async execute(data: CreateUserRequestDto) {
-    const isEmailExists = await this.repository.existsEmail(data.email);
+  constructor(private readonly repository: UserRepository) {}
+  async execute(user: User): Promise<User> {
+    const isEmailExists = await this.repository.existsEmail(user.email);
 
     if (isEmailExists) {
       throw new UnprocessableEntityException('Email đã tồn tại');
     }
 
-    const userDomain = this.mapper.toDomain(data);
-    userDomain.hashPassword();
+    user.hashPassword();
 
     let attempts = 0;
     while (true) {
-      const username = userDomain.generateUsernameFromEmail(userDomain.email);
+      const username = user.generateUsernameFromEmail(user.email);
       const isUsernameExists = await this.repository.existsUsername(username);
 
       if (!isUsernameExists) {
-        userDomain.changeUsername(username);
+        user.changeUsername(username);
         break;
       }
 
@@ -44,8 +39,6 @@ export class CreateUserUseCase {
       }
     }
 
-    const user = await this.repository.createUser(userDomain);
-
-    return user;
+    return await this.repository.createUser(user);
   }
 }
