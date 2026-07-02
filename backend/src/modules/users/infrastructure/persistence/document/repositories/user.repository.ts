@@ -11,7 +11,6 @@ export class UserDocumentRepository implements UserRepository {
   constructor(
     @InjectModel(UserSchemaClass.name)
     private readonly model: Model<UserSchemaClass>,
-    private readonly mapper: UserPersistenceMapper,
   ) {}
 
   async existsEmail(email: string): Promise<boolean> {
@@ -25,14 +24,14 @@ export class UserDocumentRepository implements UserRepository {
   }
 
   async createUser(user: User): Promise<User> {
-    const userModel = new this.model(this.mapper.toSchema(user));
+    const userModel = new this.model(UserPersistenceMapper.toSchema(user));
     const userSchema = await userModel.save();
-    return this.mapper.toDomain(userSchema);
+    return UserPersistenceMapper.toDomain(userSchema);
   }
 
   async findAll(): Promise<User[]> {
     const userSchemas = await this.model.find();
 
-    return userSchemas.map((item) => this.mapper.toDomain(item));
+    return userSchemas.map((item) => UserPersistenceMapper.toDomain(item));
   }
 }

@@ -9,16 +9,15 @@ export class UserService {
   constructor(
     private readonly createUser: CreateUserUseCase,
     private readonly repository: UserRepository,
-    private readonly mapper: UserMapper,
   ) {}
 
   async findAll() {
     const users = await this.repository.findAll();
-    return users.map((item) => this.mapper.toDto(item));
+    return users.map((item) => UserMapper.toDto(item));
   }
 
   async create(dto: CreateUserRequestDto) {
-    const user = await this.createUser.execute(this.mapper.toDomain(dto));
-    return this.mapper.toDto(user);
+    const user = await this.createUser.execute(UserMapper.toDomain(dto));
+    return UserMapper.toDto(user);
   }
 }

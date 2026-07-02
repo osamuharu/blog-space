@@ -3,8 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema, UserSchemaClass } from './schemas/users.schema';
 import { UserRepository } from '../../../domain/repositories/user.repository';
 import { UserDocumentRepository } from './repositories/user.repository';
-import { UserPersistenceMapper } from './mappers/user-persistence.mapper';
-import { UserPersistenceImpl } from './mappers/impl/user-persistence.impl';
 
 @Module({
   imports: [
@@ -16,10 +14,6 @@ import { UserPersistenceImpl } from './mappers/impl/user-persistence.impl';
     {
       provide: UserRepository,
       useClass: UserDocumentRepository,
-    },
-    {
-      provide: UserPersistenceMapper,
-      useClass: UserPersistenceImpl,
     },
   ],
   exports: [UserRepository],
