@@ -18,8 +18,6 @@ export class CreateUserUseCase {
       throw new UnprocessableEntityException('Email đã tồn tại');
     }
 
-    user.hashPassword();
-
     let attempts = 0;
     while (true) {
       const username = user.generateUsernameFromEmail(user.email);
@@ -33,11 +31,13 @@ export class CreateUserUseCase {
       attempts++;
       if (attempts >= RETRY_CHANGE_USERNAME_MAX_ATTEMPTS) {
         throw new HttpException(
-          'Không thể tạo mới tài khoản do lỗi sinh username tự động. Vui lòng thử lại.',
+          'Tạo user thất bại, vui lòng thử lại sau',
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
     }
+
+    user.hashPassword();
 
     return await this.repository.createUser(user);
   }

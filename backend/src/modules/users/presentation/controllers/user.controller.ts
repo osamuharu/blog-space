@@ -31,7 +31,11 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() dto: CreateUserRequestDto): Promise<void> {
+  @ApiOkResponse({
+    description: 'Tạo user thành công',
+    type: UserResponseDto,
+  })
+  async create(@Body() dto: CreateUserRequestDto): Promise<UserResponseDto> {
     return this.service.create(dto);
   }
 }

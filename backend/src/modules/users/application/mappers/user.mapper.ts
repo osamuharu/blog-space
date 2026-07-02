@@ -4,11 +4,13 @@ import { UserResponseDto } from '../../presentation/dtos/user-response.dto';
 
 export class UserMapper {
   static toDomain(dto: CreateUserRequestDto): User {
-    return new User({
+    const user = new User({
       email: dto.email,
       password: dto.password,
       fullName: dto.fullName,
     });
+
+    return user;
   }
 
   static toDto(domain: User): UserResponseDto {
