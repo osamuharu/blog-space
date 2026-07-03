@@ -18,27 +18,23 @@ export class CreateUserUseCase {
       throw new UnprocessableEntityException('Email đã tồn tại');
     }
 
-    let attempts = 0;
-    while (true) {
-      const username = user.generateUsernameFromEmail(user.email);
-      const isUsernameExists = await this.repository.existsUsername(username);
+    for (let i = 0; i < RETRY_CHANGE_USERNAME_MAX_ATTEMPTS; i++) {
+      const isUsernameExists = await this.repository.existsUsername(
+        user.username,
+      );
 
       if (!isUsernameExists) {
-        user.changeUsername(username);
-        break;
+        return await this.repository.createUser(user);
       }
 
-      attempts++;
-      if (attempts >= RETRY_CHANGE_USERNAME_MAX_ATTEMPTS) {
-        throw new HttpException(
-          'Tạo user thất bại, vui lòng thử lại sau',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      const newUsername = user.generateUsernameFromEmail(user.email);
+
+      user.changeUsername(newUsername);
     }
 
-    user.hashPassword();
-
-    return await this.repository.createUser(user);
+    throw new HttpException(
+      'Tạo user thất bại, vui lòng thử lại sau',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 }

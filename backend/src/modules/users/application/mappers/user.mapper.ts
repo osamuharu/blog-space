@@ -14,8 +14,10 @@ export class UserMapper {
   }
 
   static toDto(domain: User): UserResponseDto {
-    if (domain.id === undefined || domain.username === undefined) {
-      throw new Error('User domain object is missing required properties');
+    if (domain.id === undefined) {
+      throw new Error(
+        'User chưa được lưu vào cơ sở dữ liệu, không thể chuyển đổi sang DTO',
+      );
     }
 
     return {
