@@ -58,10 +58,6 @@ export class User {
     this._password = bcrypt.hashSync(this._password, salt);
   }
 
-  public comparePassword(plainPassword: string): boolean {
-    return bcrypt.compareSync(plainPassword, this._password);
-  }
-
   private generatePadding(targetLength: number): string {
     let padding = '';
     for (let i = 0; i < targetLength; i++) {

@@ -1,8 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
-import { User } from '@/src/modules/users/domain/entities/user.entity';
 import { AppConfigType } from '@/src/shared/config/app-config.type';
 
 import { AuthConfigType } from '../../config/auth-config.type';
@@ -12,6 +10,7 @@ import { LoginRequestDto } from '../../presentation/dtos/login-request.dto';
 import { LoginResponseDto } from '../../presentation/dtos/login-response.dto';
 import { RegisterRequestDto } from '../../presentation/dtos/register-request.dto';
 import { RegisterUseCase } from '../use-cases/register.use-case';
+import { UserDto } from '@/src/modules/users/presentation/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +37,7 @@ export class AuthService {
     await this.registerUseCase.execute(dto);
   }
 
-  private async generateAccessToken(user: User): Promise<string> {
+  private async generateAccessToken(user: UserDto): Promise<string> {
     const payload: JwtPayloadType = {
       sub: user.id,
       username: user.username,

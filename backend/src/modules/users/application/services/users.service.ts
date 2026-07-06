@@ -12,17 +12,23 @@ export class UserService {
   ) {}
 
   async findAll() {
-    const users = await this.repository.findAll();
+    const users = (await this.repository.findAll()).map((user) =>
+      UserMapper.toDto(user),
+    );
     return users;
   }
 
   async findByEmail(email: string) {
     const user = await this.repository.findByEmail(email);
-    return user;
+    if (!user) {
+      return null;
+    }
+
+    return UserMapper.toDto(user);
   }
 
   async create(dto: CreateUserRequestDto) {
     const user = await this.createUser.execute(UserMapper.toDomain(dto));
-    return user;
+    return UserMapper.toDto(user);
   }
 }

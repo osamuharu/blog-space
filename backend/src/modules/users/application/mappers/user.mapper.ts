@@ -1,6 +1,6 @@
 import { User } from '../../domain/entities/user.entity';
 import { CreateUserRequestDto } from '../../presentation/dtos/create-user-request.dto';
-import { UserResponseDto } from '../../presentation/dtos/user-response.dto';
+import { UserDto } from '../../presentation/dtos/user.dto';
 
 export class UserMapper {
   static toDomain(dto: CreateUserRequestDto): User {
@@ -13,7 +13,7 @@ export class UserMapper {
     return user;
   }
 
-  static toDto(domain: User): UserResponseDto {
+  static toDto(domain: User): UserDto {
     if (domain.id === undefined) {
       throw new Error(
         'User chưa được lưu vào cơ sở dữ liệu, không thể chuyển đổi sang DTO',
@@ -25,6 +25,7 @@ export class UserMapper {
       email: domain.email,
       fullName: domain.fullName,
       username: domain.username,
+      password: domain.password,
     };
   }
 }
