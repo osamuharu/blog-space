@@ -15,3 +15,7 @@ export type DatabaseConfig = {
   key?: string;
   cert?: string;
 };
+
+export type DatabaseConfigType = {
+  database: DatabaseConfig;
+};

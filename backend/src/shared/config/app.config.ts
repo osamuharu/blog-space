@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import { AppConfig } from '../types/app-config.type';
+import { AppConfig } from './app-config.type';
 import {
   IsEnum,
   IsInt,

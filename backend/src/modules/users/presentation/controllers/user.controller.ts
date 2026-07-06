@@ -10,6 +10,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../../application/services/users.service';
 import { CreateUserRequestDto } from '../dtos/create-user-request.dto';
 import { UserResponseDto } from '../dtos/user-response.dto';
+import { UserMapper } from '../../application/mappers/user.mapper';
 
 @ApiTags('Users')
 @Controller({
@@ -26,7 +27,7 @@ export class UserController {
     type: [UserResponseDto],
   })
   async getAll(): Promise<UserResponseDto[]> {
-    return this.service.findAll();
+    return (await this.service.findAll()).map((user) => UserMapper.toDto(user));
   }
 
   @Post()
@@ -36,6 +37,6 @@ export class UserController {
     type: UserResponseDto,
   })
   async create(@Body() dto: CreateUserRequestDto): Promise<UserResponseDto> {
-    return this.service.create(dto);
+    return UserMapper.toDto(await this.service.create(dto));
   }
 }

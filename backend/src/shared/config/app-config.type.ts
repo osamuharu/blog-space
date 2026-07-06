@@ -9,3 +9,7 @@ export type AppConfig = {
   fallbackLanguage: string;
   headerLanguage: string;
 };
+
+export type AppConfigType = {
+  app: AppConfig;
+};

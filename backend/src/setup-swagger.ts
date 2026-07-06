@@ -1,11 +1,11 @@
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
-import { AllConfigType } from './shared/types/config.type';
+import { AppConfigType } from './shared/config/app-config.type';
 
 export default function setupSwagger(
   app: INestApplication,
-  configService: ConfigService<AllConfigType>,
+  configService: ConfigService<AppConfigType>,
 ): { url: string } {
   const docName: string = configService.getOrThrow('app.name', { infer: true });
   const docDesc: string = 'Section for describe whole APIs';

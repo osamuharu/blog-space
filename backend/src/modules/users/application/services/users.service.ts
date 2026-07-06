@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserUseCase } from '../useCases/create-user-use-case';
+import { CreateUserUseCase } from '../use-cases/create-user.use-case';
 import { CreateUserRequestDto } from '../../presentation/dtos/create-user-request.dto';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserMapper } from '../mappers/user.mapper';
@@ -13,11 +13,16 @@ export class UserService {
 
   async findAll() {
     const users = await this.repository.findAll();
-    return users.map((item) => UserMapper.toDto(item));
+    return users;
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.repository.findByEmail(email);
+    return user;
   }
 
   async create(dto: CreateUserRequestDto) {
     const user = await this.createUser.execute(UserMapper.toDomain(dto));
-    return UserMapper.toDto(user);
+    return user;
   }
 }

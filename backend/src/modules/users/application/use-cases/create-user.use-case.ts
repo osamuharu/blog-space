@@ -24,6 +24,7 @@ export class CreateUserUseCase {
       );
 
       if (!isUsernameExists) {
+        user.hashPassword();
         return await this.repository.createUser(user);
       }
 

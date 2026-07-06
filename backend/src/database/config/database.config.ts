@@ -8,8 +8,8 @@ import {
   IsBoolean,
   IsOptional,
 } from 'class-validator';
-import validateConfig from '../utils/validate-config';
-import { DatabaseConfig } from '../types/database-config.type';
+import validateConfig from '@/src/shared/utils/validate-config';
+import { DatabaseConfig } from './database-config.type';
 
 class EnvironmentVariablesValidator {
   @ValidateIf((env: EnvironmentVariablesValidator) => !!env.DATABASE_URL)

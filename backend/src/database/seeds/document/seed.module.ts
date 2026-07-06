@@ -1,5 +1,5 @@
 import appConfig from '@/src/shared/config/app.config';
-import databaseConfig from '@/src/shared/config/database.config';
+import databaseConfig from '@/src/database/config/database.config';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../../database.module';

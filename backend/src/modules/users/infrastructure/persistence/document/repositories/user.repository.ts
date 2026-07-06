@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UserPersistenceMapper } from '../mappers/user-persistence.mapper';
 import { UserRepository } from '@/src/modules/users/domain/repositories/user.repository';
 import { User } from '@/src/modules/users/domain/entities/user.entity';
+import { NullableType } from '@/src/shared/types/nullable.type';
 
 @Injectable()
 export class UserDocumentRepository implements UserRepository {
@@ -12,6 +13,22 @@ export class UserDocumentRepository implements UserRepository {
     @InjectModel(UserSchemaClass.name)
     private readonly model: Model<UserSchemaClass>,
   ) {}
+
+  async findByEmail(email: string): Promise<NullableType<User>> {
+    const userSchema = await this.model.findOne({ email });
+
+    if (!userSchema) {
+      return null;
+    }
+
+    return UserPersistenceMapper.toDomain(userSchema);
+  }
+
+  async findAll(): Promise<User[]> {
+    const userSchemas = await this.model.find();
+
+    return userSchemas.map((item) => UserPersistenceMapper.toDomain(item));
+  }
 
   async existsEmail(email: string): Promise<boolean> {
     const isExists = await this.model.exists({ email });
@@ -27,11 +44,5 @@ export class UserDocumentRepository implements UserRepository {
     const userModel = new this.model(UserPersistenceMapper.toSchema(user));
     const userSchema = await userModel.save();
     return UserPersistenceMapper.toDomain(userSchema);
-  }
-
-  async findAll(): Promise<User[]> {
-    const userSchemas = await this.model.find();
-
-    return userSchemas.map((item) => UserPersistenceMapper.toDomain(item));
   }
 }

@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { MongooseModule, getConnectionToken } from '@nestjs/mongoose'; // <-- Import getConnectionToken
-import { AllConfigType } from '../shared/types/config.type';
+import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { ENVIROMENT } from '../shared/constant/enum';
 import {
   MongooseCloudConfigService,
@@ -12,6 +10,10 @@ import '@nestjs-cls/transactional-adapter-mongoose';
 import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { ClsModule } from 'nestjs-cls';
 import { TransactionalAdapterMongoose } from '@nestjs-cls/transactional-adapter-mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import databaseConfig from './config/database.config';
+import { AppConfigType } from '../shared/config/app-config.type';
+import { DatabaseConfigType } from './config/database-config.type';
 
 @Module({
   imports: [
@@ -20,9 +22,12 @@ import { TransactionalAdapterMongoose } from '@nestjs-cls/transactional-adapter-
         new ClsPluginTransactional({
           imports: [
             MongooseModule.forRootAsync({
+              imports: [ConfigModule.forFeature(databaseConfig)],
               inject: [ConfigService],
               useFactory: async (
-                configService: ConfigService<AllConfigType>,
+                configService: ConfigService<
+                  AppConfigType & DatabaseConfigType
+                >,
               ) => {
                 const nodeEnv = configService.getOrThrow('app.nodeEnv', {
                   infer: true,

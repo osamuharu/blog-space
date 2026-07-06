@@ -7,12 +7,11 @@ import {
 import { Connection } from 'mongoose';
 import mongooseAutoPopulate from 'mongoose-autopopulate';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-
-import { AllConfigType } from '../../shared/types/config.type';
+import { DatabaseConfigType } from '../config/database-config.type';
 
 @Injectable()
 export class MongooseCloudConfigService implements MongooseOptionsFactory {
-  constructor(private configService: ConfigService<AllConfigType>) {}
+  constructor(private configService: ConfigService<DatabaseConfigType>) {}
 
   createMongooseOptions(): MongooseModuleOptions {
     const options: MongooseModuleOptions = {
@@ -31,7 +30,7 @@ export class MongooseCloudConfigService implements MongooseOptionsFactory {
 export class MongooseMemoryConfigService implements MongooseOptionsFactory {
   private mongoServer?: MongoMemoryServer;
 
-  constructor(private configService: ConfigService<AllConfigType>) {}
+  constructor(private configService: ConfigService<DatabaseConfigType>) {}
 
   async createMongooseOptions(): Promise<MongooseModuleOptions> {
     this.mongoServer = await MongoMemoryServer.create({

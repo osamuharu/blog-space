@@ -31,7 +31,6 @@ export class User {
     this._password = password;
     this._fullName = fullName;
     this._username = username ?? this.generateUsernameFromEmail(email);
-    this.hashPassword();
   }
 
   public get id(): string | undefined {
@@ -54,9 +53,13 @@ export class User {
     return this._username;
   }
 
-  private hashPassword() {
+  public hashPassword() {
     const salt = bcrypt.genSaltSync();
     this._password = bcrypt.hashSync(this._password, salt);
+  }
+
+  public comparePassword(plainPassword: string): boolean {
+    return bcrypt.compareSync(plainPassword, this._password);
   }
 
   private generatePadding(targetLength: number): string {

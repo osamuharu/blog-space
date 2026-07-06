@@ -1,7 +1,7 @@
+import { AuthModule } from './modules/auth/auth.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import appConfig from './shared/config/app.config';
-import databaseConfig from './shared/config/database.config';
 import { UserModule } from './modules/users/users.module';
 import { DatabaseModule } from './database/database.module';
 
@@ -9,11 +9,12 @@ import { DatabaseModule } from './database/database.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig],
+      load: [appConfig],
       envFilePath: ['.env'],
     }),
     DatabaseModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
