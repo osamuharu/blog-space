@@ -8,6 +8,7 @@ import { AnonymousStrategy } from './application/strategies/anonymous.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { UserModule } from '../users/users.module';
+import { RegisterUseCase } from './application/use-cases/register.use-case';
 
 @Module({
   imports: [
@@ -16,7 +17,13 @@ import { UserModule } from '../users/users.module';
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, AnonymousStrategy, LoginUseCase],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    AnonymousStrategy,
+    LoginUseCase,
+    RegisterUseCase,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

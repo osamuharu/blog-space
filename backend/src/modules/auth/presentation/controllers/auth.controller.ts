@@ -1,16 +1,9 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from '../../application/services/auth.service';
 import { LoginRequestDto } from '../dtos/login-request.dto';
 import { LoginResponseDto } from '../dtos/login-response.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { RegisterRequestDto } from '../dtos/register-request.dto';
 
 @ApiTags('Auth')
 @Controller({
@@ -26,8 +19,17 @@ export class AuthController {
     description: 'Đăng nhập thành công',
     type: [LoginResponseDto],
   })
-  @UseGuards(AuthGuard('jwt'))
   async login(@Body() dto: LoginRequestDto): Promise<LoginResponseDto> {
     return this.authService.login(dto);
+  }
+
+  @Post('/register')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Đăng nhập thành công',
+    type: [LoginResponseDto],
+  })
+  async register(@Body() dto: RegisterRequestDto): Promise<void> {
+    return this.authService.register(dto);
   }
 }
