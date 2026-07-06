@@ -26,8 +26,7 @@ export class AuthController {
   @Post('/register')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
-    description: 'Đăng nhập thành công',
-    type: [LoginResponseDto],
+    description: 'Đăng ký thành công',
   })
   async register(@Body() dto: RegisterRequestDto): Promise<void> {
     return this.authService.register(dto);
